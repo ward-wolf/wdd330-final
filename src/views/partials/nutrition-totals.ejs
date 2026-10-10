@@ -1,0 +1,44 @@
+<section class="nutrition-totals">
+  <h2>Nutrition</h2>
+  <label class="servings">
+    Servings
+    <%# On the edit and My Recipe pages, servingsForm ties this box to the ingredient form so the number is kept when it's submitted %>
+    <input type="number" id="servings" name="servings" value="<%= servings %>" min="1" max="50" step="1"<% if (locals.servingsForm) { %> form="<%= servingsForm %>"<% } %>>
+  </label>
+  <%# One row per nutrient. Shows N/A (with no unit) if no ingredient had data for it.
+      The per-serving cells carry the whole-recipe total so servings.js can redo the math in the browser. %>
+  <table class="totals-table">
+    <thead>
+      <tr>
+        <th scope="col">Nutrient</th>
+        <th scope="col">Whole recipe</th>
+        <th scope="col">Per serving</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% nutrition.nutrients.forEach(n => { %>
+        <% const total = nutrition.totals[n.key]; %>
+        <tr>
+          <th scope="row"><%= n.label %></th>
+          <% if (total === null) { %>
+            <td>N/A</td>
+            <td>N/A</td>
+          <% } else { %>
+            <td><%= total %> <%= n.unit %></td>
+            <td data-total="<%= total %>" data-unit="<%= n.unit %>"><%= Math.round(total / servings * 10) / 10 %> <%= n.unit %></td>
+          <% } %>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  <%# Explain anything that affects the totals. Each note only shows if it applies %>
+  <% if (nutrition.estimated.length) { %>
+    <p class="note">No amount given for: <%= nutrition.estimated.join(', ') %>. Each is estimated at 100 g.</p>
+  <% } %>
+  <% if (nutrition.skipped.length) { %>
+    <p class="note">Not counted (serving suggestions or garnishes): <%= nutrition.skipped.join(', ') %>.</p>
+  <% } %>
+  <% if (nutrition.missing.length) { %>
+    <p class="note">No nutrition data found for: <%= nutrition.missing.join(', ') %>. Totals leave these out.</p>
+  <% } %>
+</section>

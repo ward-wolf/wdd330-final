@@ -1,0 +1,51 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+<main class="my-day">
+  <h1>My Day</h1>
+  <p>Combine up to <%= maxRecipes %> recipes to see the nutrition for your whole day.
+     The totals count <strong>one serving</strong> of each recipe.</p>
+
+  <%# Everything below is filled in by public/js/my-day.js from the recipes saved in this browser %>
+  <noscript><p class="note">This page needs JavaScript turned on.</p></noscript>
+  <p class="note" id="day-status" role="status">Loading your day…</p>
+
+  <div id="day-content" hidden>
+    <ul class="day-list" id="day-list"></ul>
+    <div class="form-actions">
+      <button type="button" class="button-secondary" id="clear-day">Clear my day</button>
+      <span class="note" id="day-recipe-count"></span>
+    </div>
+
+    <section class="nutrition-totals">
+      <h2>Nutrition for the day</h2>
+      <table class="totals-table">
+        <thead>
+          <tr>
+            <th scope="col">Nutrient</th>
+            <th scope="col">Day total</th>
+          </tr>
+        </thead>
+        <tbody id="day-totals"></tbody>
+      </table>
+    </section>
+  </div>
+
+  <%# One recipe in the list. my-day.js copies this for each recipe and fills in the details %>
+  <template id="day-recipe-template">
+    <li class="day-recipe">
+      <img src="" alt="" width="80" height="80">
+      <div class="day-recipe-info">
+        <a class="day-recipe-name" href=""></a>
+        <label class="servings">
+          Recipe makes
+          <input type="number" class="day-servings" min="1" max="50" step="1">
+          servings
+        </label>
+        <span class="note day-recipe-calories"></span>
+      </div>
+      <button type="button" class="button-secondary day-remove">Remove</button>
+    </li>
+  </template>
+</main>
+<script type="module" src="/js/my-day.js"></script>
+<%- include('partials/footer') %>

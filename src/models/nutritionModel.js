@@ -16,11 +16,21 @@ export const NUTRIENTS = [
   { key: 'potassium_mg', label: 'Potassium', unit: 'mg' },
 ];
 
+// Remember recent lookups so the same ingredient isn't looked up (and paid for) twice.
+// Clears when the server restarts. Oldest entries are dropped once it reaches the limit.
+const cache = new Map();
+const CACHE_LIMIT = 1000;
+
 // Get nutrition info (list) for a food written in plain words, like "1 cup flour".
 export async function getNutrition(query) {
   const apiKey = process.env.NINJAS_API_KEY;
   if (!apiKey) {
     throw new Error('NINJAS_API_KEY is missing from .env');
+  }
+
+  const key = query.trim().toLowerCase();
+  if (cache.has(key)) {
+    return cache.get(key);
   }
 
   const response = await fetch(`${BASE_URL}?query=${encodeURIComponent(query)}`, {
@@ -29,5 +39,11 @@ export async function getNutrition(query) {
   if (!response.ok) {
     throw new Error(`API Ninjas request failed (${response.status})`);
   }
-  return response.json();
+
+  const data = await response.json();
+  if (cache.size >= CACHE_LIMIT) {
+    cache.delete(cache.keys().next().value); // drop the oldest
+  }
+  cache.set(key, data);
+  return data;
 }

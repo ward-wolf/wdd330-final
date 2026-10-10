@@ -1,0 +1,11 @@
+<%# One editable ingredient. The index keeps each row's fields together when the form is sent
+    (ingredients[0][name], ingredients[0][unit]...). The "Add ingredient" button reuses this with a placeholder index. %>
+<% const label = ingredient.name || 'new ingredient'; %>
+<li class="ingredient-row">
+  <input type="text" name="ingredients[<%= index %>][quantity]" value="<%= ingredient.quantity %>" placeholder="1/2" maxlength="20" aria-label="Quantity for <%= label %>">
+  <input type="text" name="ingredients[<%= index %>][unit]" value="<%= ingredient.unit %>" placeholder="cup" maxlength="40" aria-label="Unit for <%= label %>">
+  <input type="text" name="ingredients[<%= index %>][name]" value="<%= ingredient.name %>" placeholder="Ingredient" maxlength="80" aria-label="Ingredient name">
+  <label class="remove">
+    <input type="checkbox" name="ingredients[<%= index %>][remove]" value="1"> Remove
+  </label>
+</li>

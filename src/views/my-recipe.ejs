@@ -1,0 +1,23 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+<main class="edit">
+  <h1>My Recipe</h1>
+  <p>Type in your recipe's ingredients one per row, then select <strong>Get nutrition</strong>.
+     Units can be words like cup, tbsp, tsp, g or oz, or vague ones like pinch or handful.
+     Your recipe isn't saved once you leave this page.</p>
+
+  <%# A fresh page starts with 5 blank rows. After submitting, keep what was typed plus one blank row %>
+  <%- include('partials/ingredient-form', {
+    formAction: '/my-recipe',
+    submitLabel: 'Get nutrition',
+    blankRows: submitted ? 1 : 5,
+    resetHref: '/my-recipe',
+    resetLabel: 'Start over',
+    askRecipeName: true,
+  }) %>
+
+  <%- include('partials/nutrition-results', { heading: recipeName ? `Nutrition for ${recipeName}` : 'Nutrition for your recipe' }) %>
+</main>
+<script src="/js/servings.js"></script>
+<script src="/js/edit-ingredients.js"></script>
+<%- include('partials/footer') %>

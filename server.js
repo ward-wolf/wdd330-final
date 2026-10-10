@@ -15,6 +15,9 @@ app.set('views', path.join(__dirname, 'src', 'views'));
 // Send files from public/ (CSS, images, browser JS)
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Read submitted forms (like the edit ingredients form) into req.body
+app.use(express.urlencoded({ extended: true }));
+
 // Send each web address to the right controller (see routes.js)
 app.use('/', routes);
 

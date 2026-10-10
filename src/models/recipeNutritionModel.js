@@ -69,3 +69,14 @@ export async function getRecipeNutrition(recipe) {
     estimated: namesWith('estimated'),
   };
 }
+
+// Get the nutrition for ingredients typed into a form, where quantity and unit are separate
+// ({ quantity: '3/4', unit: 'cup', name: 'milk' }). Gives null if the list is empty.
+export async function getNutritionForFormIngredients(ingredients) {
+  if (ingredients.length === 0) {
+    return null;
+  }
+  // Join quantity and unit back into one amount, like TheMealDB uses ("3/4 cup")
+  const forLookup = ingredients.map((i) => ({ name: i.name, measure: `${i.quantity} ${i.unit}`.trim() }));
+  return getRecipeNutrition({ ingredients: forLookup });
+}

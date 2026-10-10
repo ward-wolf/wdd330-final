@@ -1,0 +1,41 @@
+<%# The ingredient form used on the edit page and the My Recipe page. Settings passed in:
+    formAction (where to send it), submitLabel (button text), blankRows (empty rows at the end),
+    resetHref and resetLabel (the start-over link), askRecipeName (show a recipe name box) %>
+<form id="ingredient-form" method="post" action="<%= formAction %>">
+  <% if (locals.askRecipeName) { %>
+    <label class="recipe-name">
+      Recipe name <span class="optional">(optional)</span>
+      <input type="text" name="recipeName" value="<%= recipeName %>" maxlength="80" placeholder="Grandma's pancakes">
+    </label>
+  <% } %>
+
+  <div class="ingredient-headings" aria-hidden="true">
+    <span>Quantity</span><span>Unit</span><span>Ingredient</span><span></span>
+  </div>
+  <%# The list always ends with blank rows so ingredients can be added without JavaScript.
+      data-next-index tells edit-ingredients.js which number to give the next row it adds. %>
+  <ol class="ingredient-list" id="ingredient-list" data-next-index="<%= ingredients.length + blankRows %>" data-max="<%= maxIngredients %>">
+    <% ingredients.forEach((ingredient, index) => { %>
+      <%- include('edit-ingredient-row', { ingredient, index }) %>
+    <% }) %>
+    <% for (let i = 0; i < blankRows; i++) { %>
+      <%- include('edit-ingredient-row', { ingredient: { quantity: '', unit: '', name: '' }, index: ingredients.length + i }) %>
+    <% } %>
+  </ol>
+
+  <%# Without nutrition there's no servings box on the page, so keep the number here instead %>
+  <% if (!nutrition) { %>
+    <input type="hidden" name="servings" value="<%= servings %>">
+  <% } %>
+
+  <div class="form-actions">
+    <button type="button" class="button-secondary" id="add-ingredient" hidden>Add ingredient</button>
+    <button type="submit"><%= submitLabel %></button>
+    <a href="<%= resetHref %>" data-servings-link><%= resetLabel %></a>
+  </div>
+</form>
+
+<%# Blank row the "Add ingredient" button copies. __INDEX__ is swapped for a real number %>
+<template id="ingredient-row-template">
+  <%- include('edit-ingredient-row', { ingredient: { quantity: '', unit: '', name: '' }, index: '__INDEX__' }) %>
+</template>

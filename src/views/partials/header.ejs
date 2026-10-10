@@ -1,4 +1,9 @@
 <header class="site-header">
   <a href="/" class="logo">Recipe Wizards</a>
+  <nav class="site-nav">
+    <a href="/my-recipe">My Recipe</a>
+    <%# day-count.js adds the number of recipes in the day, e.g. "My Day (2)" %>
+    <a href="/my-day" id="day-count-link">My Day</a>
+  </nav>
   <%- include('search-form', { query: typeof query !== 'undefined' ? query : '' }) %>
 </header>

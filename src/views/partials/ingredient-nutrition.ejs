@@ -1,0 +1,29 @@
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Ingredient</th>
+        <th scope="col">Amount</th>
+        <%# One column per nutrient, same order as the totals above %>
+        <% nutrition.nutrients.forEach(n => { %>
+          <th scope="col"><%= n.label %> (<%= n.unit %>)</th>
+        <% }) %>
+        <th scope="col">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% nutrition.ingredients.forEach(item => { %>
+        <%# The status class greys out rows that weren't counted (skipped or not found) %>
+        <tr class="status-<%= item.status %>">
+          <th scope="row"><%= item.name %></th>
+          <td><%= item.measure %></td>
+          <% nutrition.nutrients.forEach(n => { %>
+            <%# Show a dash when there's no number for this nutrient %>
+            <td><%= item.nutrition[n.key] ?? '–' %></td>
+          <% }) %>
+          <td class="note-cell"><%= item.note %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>

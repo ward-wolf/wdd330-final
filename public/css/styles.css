@@ -64,6 +64,17 @@ a {
   background: var(--color-primary);
 }
 
+.site-nav {
+  display: flex;
+  gap: 1rem;
+  margin-right: auto;
+}
+
+.site-nav a {
+  color: #fff;
+  font-weight: 600;
+}
+
 .logo {
   color: #fff;
   font-weight: 700;
@@ -183,19 +194,30 @@ a {
   margin-top: 0;
 }
 
-.nutrition-totals dl {
-  margin: 0;
-}
-
-.nutrition-totals dl div {
+.servings {
   display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid #eee;
-  padding: 0.25rem 0;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
 }
 
-.nutrition-totals dd {
-  margin: 0;
+.servings input {
+  width: 4.5rem;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: var(--radius);
+  font-size: 1rem;
+}
+
+.totals-table thead th {
+  background: none;
+  color: var(--color-muted);
+  font-weight: 600;
+}
+
+.totals-table td {
+  text-align: right;
   font-weight: 600;
 }
 
@@ -237,4 +259,223 @@ tr.status-not-found {
 .note-cell {
   color: var(--color-muted);
   font-size: 0.8rem;
+}
+
+/* Buttons */
+.button,
+.form-actions button,
+.day-recipe button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--color-accent);
+  color: var(--color-text);
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.form-actions .button-secondary,
+.day-recipe .button-secondary {
+  background: var(--color-surface);
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+.form-actions button:disabled,
+.day-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.section-heading {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Edit ingredients form */
+.ingredient-headings,
+.ingredient-row {
+  display: grid;
+  grid-template-columns: 5rem 8rem 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.ingredient-headings {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-muted);
+  margin-bottom: 0.25rem;
+}
+
+.ingredient-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.ingredient-row input[type="text"] {
+  width: 100%;
+  min-width: 0;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: var(--radius);
+  font-size: 1rem;
+}
+
+.ingredient-row .remove {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+/* Grey out and strike through a row once "Remove" is ticked */
+.ingredient-row:has(.remove input:checked) input[type="text"] {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin: 1rem 0 2rem;
+}
+
+.results-heading {
+  border-top: 2px solid #eee;
+  padding-top: 1rem;
+}
+
+.edit .nutrition-totals {
+  max-width: 480px;
+}
+
+/* On phones, put the ingredient name on its own line under quantity and unit */
+@media (max-width: 600px) {
+  .ingredient-headings {
+    display: none;
+  }
+
+  .ingredient-row {
+    grid-template-columns: 4.5rem 1fr auto;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+  }
+
+  .ingredient-row input[name$="[name]"] {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+/* My Recipe: optional name box above the ingredient rows */
+.recipe-name {
+  display: grid;
+  gap: 0.25rem;
+  max-width: 420px;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.recipe-name input {
+  padding: 0.4rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-weight: normal;
+}
+
+.optional {
+  font-weight: normal;
+  color: var(--color-muted);
+}
+
+/* Add to my day (recipe page) */
+.day-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.day-actions p {
+  margin: 0;
+}
+
+.day-message {
+  font-weight: 600;
+  color: var(--color-primary-dark);
+}
+
+/* My Day page */
+.day-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.5rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.day-recipe {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.75rem;
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.1);
+}
+
+.day-recipe img {
+  border-radius: var(--radius);
+}
+
+.day-recipe-info {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.day-recipe-info > a {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.day-recipe .servings {
+  margin: 0;
+  font-weight: normal;
+}
+
+.my-day .nutrition-totals {
+  max-width: 480px;
+}
+
+/* On phones, put the Remove button under the recipe details */
+@media (max-width: 600px) {
+  .day-recipe {
+    grid-template-columns: 64px 1fr;
+  }
+
+  .day-recipe img {
+    width: 64px;
+    height: 64px;
+  }
+
+  .day-recipe button {
+    grid-column: 2;
+    justify-self: start;
+  }
 }

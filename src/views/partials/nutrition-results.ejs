@@ -1,0 +1,12 @@
+<%# Nutrition for ingredients typed into a form (edit page and My Recipe page).
+    heading is passed in. The servings box is tied to the form so its number is kept on the next submit. %>
+<% if (nutrition) { %>
+  <h2 class="results-heading"><%= heading %></h2>
+  <%- include('nutrition-totals', { servingsForm: 'ingredient-form' }) %>
+  <section>
+    <h2>Ingredients</h2>
+    <%- include('ingredient-nutrition') %>
+  </section>
+<% } else if (locals.submitted !== false) { %>
+  <p class="note">Add at least one ingredient to see nutrition.</p>
+<% } %>
