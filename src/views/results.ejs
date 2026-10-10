@@ -1,0 +1,22 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+<main>
+  <h1><%= title %></h1>
+
+  <% if (recipes.length === 0) { %>
+    <p>No recipes found. Try a different search.</p>
+  <% } else { %>
+    <ul class="recipe-grid">
+      <% recipes.forEach(recipe => { %>
+        <li class="recipe-card">
+          <a href="/recipe/<%= recipe.id %>">
+            <img src="<%= recipe.thumbnail %>/medium" alt="<%= recipe.name %>" loading="lazy" width="250" height="250">
+            <h2><%= recipe.name %></h2>
+            <p><%= recipe.area %> &middot; <%= recipe.category %></p>
+          </a>
+        </li>
+      <% }) %>
+    </ul>
+  <% } %>
+</main>
+<%- include('partials/footer') %>

@@ -1,0 +1,78 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+<main class="recipe">
+  <h1><%= recipe.name %></h1>
+  <p class="meta"><%= recipe.area %> &middot; <%= recipe.category %></p>
+
+  <div class="recipe-top">
+    <img src="<%= recipe.thumbnail %>" alt="<%= recipe.name %>" width="400" height="400">
+
+    <section class="nutrition-totals">
+      <h2>Nutrition (whole recipe)</h2>
+      <%# One row per nutrient. Shows N/A (with no unit) if no ingredient had data for it %>
+      <dl>
+        <% nutrition.nutrients.forEach(n => { %>
+          <div>
+            <dt><%= n.label %></dt>
+            <dd><%= nutrition.totals[n.key] ?? 'N/A' %><% if (nutrition.totals[n.key] !== null) { %> <%= n.unit %><% } %></dd>
+          </div>
+        <% }) %>
+      </dl>
+      <%# Explain anything that affects the totals. Each note only shows if it applies %>
+      <% if (nutrition.estimated.length) { %>
+        <p class="note">No amount given for: <%= nutrition.estimated.join(', ') %>. Each is estimated at 100 g.</p>
+      <% } %>
+      <% if (nutrition.skipped.length) { %>
+        <p class="note">Not counted (serving suggestions or garnishes): <%= nutrition.skipped.join(', ') %>.</p>
+      <% } %>
+      <% if (nutrition.missing.length) { %>
+        <p class="note">No nutrition data found for: <%= nutrition.missing.join(', ') %>. Totals leave these out.</p>
+      <% } %>
+    </section>
+  </div>
+
+  <section>
+    <h2>Ingredients</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Ingredient</th>
+            <th scope="col">Amount</th>
+            <%# One column per nutrient, same order as the totals above %>
+            <% nutrition.nutrients.forEach(n => { %>
+              <th scope="col"><%= n.label %> (<%= n.unit %>)</th>
+            <% }) %>
+            <th scope="col">Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% nutrition.ingredients.forEach(item => { %>
+            <%# The status class greys out rows that weren't counted (skipped or not found) %>
+            <tr class="status-<%= item.status %>">
+              <th scope="row"><%= item.name %></th>
+              <td><%= item.measure %></td>
+              <% nutrition.nutrients.forEach(n => { %>
+                <%# Show a dash when there's no number for this nutrient %>
+                <td><%= item.nutrition[n.key] ?? '–' %></td>
+              <% }) %>
+              <td class="note-cell"><%= item.note %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Instructions</h2>
+    <%# Instructions come as one block of text, so split it into a paragraph per line and skip blank lines %>
+    <% recipe.instructions.split(/\r?\n/).filter(line => line.trim()).forEach(line => { %>
+      <p><%= line %></p>
+    <% }) %>
+    <% if (recipe.source) { %>
+      <p><a href="<%= recipe.source %>">Original recipe</a></p>
+    <% } %>
+  </section>
+</main>
+<%- include('partials/footer') %>

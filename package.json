@@ -1,0 +1,30 @@
+{
+  "name": "recipe-wizards",
+  "version": "1.0.0",
+  "description": "Search recipes and see their nutrition info",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ward-wolf/wdd330-final.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/ward-wolf/wdd330-final/issues"
+  },
+  "homepage": "https://github.com/ward-wolf/wdd330-final#readme",
+  "dependencies": {
+    "dotenv": "^18.0.7",
+    "ejs": "^7.0.1",
+    "express": "^5.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
