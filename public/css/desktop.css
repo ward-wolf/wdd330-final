@@ -1,0 +1,59 @@
+/* Desktop layout (1024px and wider). Builds on styles.css and tablet.css. */
+
+@media (min-width: 1024px) {
+  h1 {
+    font-size: 2.25rem;
+  }
+
+  main {
+    padding: 2rem;
+  }
+
+  /* Header: line the logo and search up with the edges of the page content below.
+     The page content is at most --max-width wide and centered, with 2rem padding. */
+  .site-header {
+    padding: 1rem max(2rem, calc((100% - var(--max-width)) / 2 + 2rem));
+  }
+
+  .hero h1 {
+    font-size: 3.25rem;
+  }
+
+  /* Search results: 4 columns */
+  .recipe-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+  }
+
+  /* Recipe page: a bit more room for the nutrition table than the picture */
+  .recipe-top {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: 2rem;
+  }
+
+  /* My Day: recipe list on the left, day totals on the right.
+     The totals stay in view while scrolling a long list (sticky). */
+  .day-layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    grid-template-areas:
+      "list totals"
+      "actions totals";
+    gap: 0 2rem;
+    align-items: start;
+  }
+
+  .day-layout .day-list {
+    grid-area: list;
+  }
+
+  .day-layout .form-actions {
+    grid-area: actions;
+  }
+
+  .day-layout .nutrition-totals {
+    grid-area: totals;
+    position: sticky;
+    top: 1rem;
+  }
+}

@@ -9,7 +9,8 @@
     <ul class="recipe-grid">
       <% recipes.forEach(recipe => { %>
         <li class="recipe-card">
-          <a href="/recipe/<%= recipe.id %>">
+          <%# "from" carries the search along, so the recipe page can link back to these results %>
+          <a href="/recipe/<%= recipe.id %>?from=<%= encodeURIComponent(query) %>">
             <img src="<%= recipe.thumbnail %>/medium" alt="<%= recipe.name %>" loading="lazy" width="250" height="250">
             <h2><%= recipe.name %></h2>
             <p><%= recipe.area %> &middot; <%= recipe.category %></p>

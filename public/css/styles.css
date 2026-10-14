@@ -1,11 +1,25 @@
+/* Base styles: the phone layout, plus the colors, fonts and effects every screen size shares.
+   Wider screens add to these in tablet.css (768px and up) and desktop.css (1024px and up). */
+
+/* Color scheme: herb green (brand), tomato red (main buttons), cream (page background).
+   Every text color here meets WCAG AA contrast (4.5:1 or more) on the backgrounds it's used on. */
 :root {
-  --color-primary: #5b3a8c;
-  --color-primary-dark: #3f2763;
-  --color-accent: #f2b134;
-  --color-bg: #faf8fc;
-  --color-surface: #ffffff;
-  --color-text: #222222;
-  --color-muted: #666666;
+  --color-primary: #2e6b3a;        /* herb green: header, links, borders, outlined buttons */
+  --color-primary-dark: #1f4d29;   /* darker green: table headers, messages */
+  --color-accent: #b3401f;         /* tomato red: main action buttons */
+  --color-accent-dark: #8f3318;    /* tomato red when hovered */
+  --color-on-accent: #ffffff;      /* text on tomato or green buttons */
+  --color-bg: #fffbf5;             /* cream page background */
+  --color-surface: #ffffff;        /* cards and tables, so they stand out from the cream */
+  --color-text: #2b2520;           /* warm near-black */
+  --color-muted: #6b6157;          /* warm gray for notes and labels */
+  --color-border: #ece4d8;         /* light dividers between rows */
+  --color-input-border: #8c8174;   /* form box outlines */
+
+  /* Typography: Lora for headings, Inter for everything else (loaded from Google Fonts in head.ejs) */
+  --font-heading: "Lora", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
   --radius: 8px;
   --max-width: 1100px;
 }
@@ -18,7 +32,7 @@
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-body);
   line-height: 1.5;
   color: var(--color-text);
   background: var(--color-bg);
@@ -33,6 +47,36 @@ main {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 1rem;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-primary-dark);
+}
+
+h1 {
+  font-size: 1.75rem;
+}
+
+h2 {
+  font-size: 1.35rem;
+}
+
+/* Form boxes and buttons don't use the page's font unless told to */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+/* Keep anything marked hidden hidden, even if a rule below gives it display: flex or grid */
+[hidden] {
+  display: none !important;
 }
 
 img {
@@ -77,8 +121,9 @@ a {
 
 .logo {
   color: #fff;
+  font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.25rem;
+  font-size: 1.4rem;
   text-decoration: none;
 }
 
@@ -94,14 +139,13 @@ a {
   display: flex;
   gap: 0.5rem;
   width: 100%;
-  max-width: 420px;
 }
 
 .search-form input {
   flex: 1;
   min-width: 0;
   padding: 0.5rem 0.75rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-input-border);
   border-radius: var(--radius);
   font-size: 1rem;
 }
@@ -111,9 +155,14 @@ a {
   border: none;
   border-radius: var(--radius);
   background: var(--color-accent);
+  color: var(--color-on-accent);
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
+}
+
+.hero .search-form {
+  max-width: 420px;
 }
 
 .hero {
@@ -125,7 +174,7 @@ a {
 }
 
 .hero h1 {
-  font-size: 2.5rem;
+  font-size: 2.25rem;
   color: var(--color-primary);
   margin-bottom: 0;
 }
@@ -135,8 +184,8 @@ a {
   list-style: none;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
 }
 
 .recipe-card a {
@@ -175,7 +224,7 @@ a {
 .recipe-top {
   display: grid;
   gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: minmax(0, 1fr); /* minmax(0, ...) stops wide content from stretching the column past the screen */
   align-items: start;
 }
 
@@ -205,9 +254,14 @@ a {
 .servings input {
   width: 4.5rem;
   padding: 0.3rem 0.5rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-input-border);
   border-radius: var(--radius);
   font-size: 1rem;
+}
+
+/* The totals table's headings may wrap ("Whole recipe" on two lines) so it fits on a phone */
+.totals-table th {
+  white-space: normal;
 }
 
 .totals-table thead th {
@@ -240,7 +294,7 @@ table {
 th,
 td {
   padding: 0.4rem 0.6rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--color-border);
   text-align: left;
   white-space: nowrap;
 }
@@ -270,11 +324,27 @@ tr.status-not-found {
   border: none;
   border-radius: var(--radius);
   background: var(--color-accent);
-  color: var(--color-text);
+  color: var(--color-on-accent);
   font-weight: 600;
   font-size: 1rem;
   text-decoration: none;
   cursor: pointer;
+}
+
+.button:hover:not(:disabled),
+.form-actions button:hover:not(:disabled),
+.search-form button:hover {
+  background: var(--color-accent-dark);
+}
+
+.site-header .search-form button:hover {
+  background: #ffffff;
+}
+
+.form-actions .button-secondary:hover,
+.day-recipe .button-secondary:hover,
+.export-link .button-secondary:hover {
+  background: var(--color-bg);
 }
 
 .form-actions .button-secondary,
@@ -298,16 +368,24 @@ tr.status-not-found {
   justify-content: space-between;
 }
 
-/* Edit ingredients form */
-.ingredient-headings,
+/* Edit ingredients form. On phones, the ingredient name gets its own line under quantity and unit,
+   and the column headings are hidden (each box has its own label for screen readers) */
 .ingredient-row {
   display: grid;
-  grid-template-columns: 5rem 8rem 1fr auto;
+  grid-template-columns: 4.5rem 1fr auto;
   gap: 0.5rem;
   align-items: center;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.ingredient-row input[name$="[name]"] {
+  grid-column: 1 / -1;
+  grid-row: 2;
 }
 
 .ingredient-headings {
+  display: none;
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--color-muted);
@@ -326,7 +404,7 @@ tr.status-not-found {
   width: 100%;
   min-width: 0;
   padding: 0.4rem 0.5rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-input-border);
   border-radius: var(--radius);
   font-size: 1rem;
 }
@@ -354,30 +432,8 @@ tr.status-not-found {
 }
 
 .results-heading {
-  border-top: 2px solid #eee;
+  border-top: 2px solid var(--color-border);
   padding-top: 1rem;
-}
-
-.edit .nutrition-totals {
-  max-width: 480px;
-}
-
-/* On phones, put the ingredient name on its own line under quantity and unit */
-@media (max-width: 600px) {
-  .ingredient-headings {
-    display: none;
-  }
-
-  .ingredient-row {
-    grid-template-columns: 4.5rem 1fr auto;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #eee;
-  }
-
-  .ingredient-row input[name$="[name]"] {
-    grid-column: 1 / -1;
-    grid-row: 2;
-  }
 }
 
 /* My Recipe: optional name box above the ingredient rows */
@@ -391,7 +447,7 @@ tr.status-not-found {
 
 .recipe-name input {
   padding: 0.4rem 0.5rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-input-border);
   border-radius: var(--radius);
   font-size: 1rem;
   font-weight: normal;
@@ -429,9 +485,10 @@ tr.status-not-found {
   gap: 0.75rem;
 }
 
+/* On phones, the Remove button sits under the recipe details */
 .day-recipe {
   display: grid;
-  grid-template-columns: 80px 1fr auto;
+  grid-template-columns: 64px 1fr;
   gap: 1rem;
   align-items: center;
   padding: 0.75rem;
@@ -441,7 +498,14 @@ tr.status-not-found {
 }
 
 .day-recipe img {
+  width: 64px;
+  height: 64px;
   border-radius: var(--radius);
+}
+
+.day-recipe button {
+  grid-column: 2;
+  justify-self: start;
 }
 
 .day-recipe-info {
@@ -459,23 +523,140 @@ tr.status-not-found {
   font-weight: normal;
 }
 
-.my-day .nutrition-totals {
-  max-width: 480px;
+/* Download as .txt link (recipe page) */
+.export-link {
+  margin: 0 0 1rem;
 }
 
-/* On phones, put the Remove button under the recipe details */
-@media (max-width: 600px) {
-  .day-recipe {
-    grid-template-columns: 64px 1fr;
-  }
+.export-link .button-secondary {
+  display: inline-block;
+  padding: 0.4rem 0.9rem;
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
 
-  .day-recipe img {
-    width: 64px;
-    height: 64px;
-  }
+/* "Downloading ... Check your browser's downloads." message next to a download button */
+.download-message {
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+}
 
-  .day-recipe button {
-    grid-column: 2;
-    justify-self: start;
+/* In the green header, a red button is hard to tell apart for people with red-green
+   color blindness, so the header's Search button is cream with green text instead */
+.site-header .search-form button {
+  background: var(--color-bg);
+  color: var(--color-primary-dark);
+}
+
+/* "Back to results" link above the recipe name */
+.back-link {
+  margin: 0.5rem 0 0;
+}
+
+/* ---------- Motion ----------
+   Small, quick effects that show something happened, without getting in the way.
+   All of them are turned off for people who ask their device to reduce motion (bottom of this section). */
+
+/* 1. Recipe cards lift slightly when hovered or reached with the keyboard */
+.recipe-card a {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.recipe-card a:hover,
+.recipe-card a:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgb(0 0 0 / 0.12);
+}
+
+/* 2. Confirmation messages ("Added to your day", "Downloading...") fade in with a slight rise */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  display: inline-block; /* lets the slight rise work on text that sits in a line */
+  animation: fade-up 0.3s ease-out;
+}
+
+/* 3. "My Day (n)" in the header pulses once when its number changes */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.pulse {
+  animation: pulse 0.4s ease-out;
+}
+
+/* 4. Ingredient rows added with "Add ingredient" slide in, and ticking Remove greys the row out gradually */
+@keyframes row-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ingredient-row.is-new {
+  animation: row-in 0.25s ease-out;
+}
+
+.ingredient-row input[type="text"] {
+  transition: opacity 0.2s ease;
+}
+
+/* 5. "Loading your day..." gently pulses while the nutrition is being fetched */
+@keyframes loading-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.is-loading {
+  animation: loading-pulse 1.2s ease-in-out infinite;
+}
+
+/* 6. Buttons change color smoothly on hover instead of switching instantly */
+button,
+.button,
+.button-secondary {
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+/* Turn the effects off for people who've set their device to reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

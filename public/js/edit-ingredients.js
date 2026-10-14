@@ -13,6 +13,7 @@ function addIngredientRow() {
     input.name = input.name.replace('__INDEX__', index);
   });
 
+  row.classList.add('is-new'); // slides in (see .ingredient-row.is-new in styles.css)
   ingredientList.append(row);
   ingredientList.dataset.nextIndex = index + 1;
   row.querySelector('input').focus();

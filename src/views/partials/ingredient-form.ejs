@@ -1,6 +1,7 @@
 <%# The ingredient form used on the edit page and the My Recipe page. Settings passed in:
     formAction (where to send it), submitLabel (button text), blankRows (empty rows at the end),
-    resetHref and resetLabel (the start-over link), askRecipeName (show a recipe name box) %>
+    resetHref and resetLabel (the start-over link), askRecipeName (show a recipe name box),
+    exportAction (where the Download as .txt button sends the form; no button if left out) %>
 <form id="ingredient-form" method="post" action="<%= formAction %>">
   <% if (locals.askRecipeName) { %>
     <label class="recipe-name">
@@ -31,7 +32,15 @@
   <div class="form-actions">
     <button type="button" class="button-secondary" id="add-ingredient" hidden>Add ingredient</button>
     <button type="submit"><%= submitLabel %></button>
+    <%# Download sends the same form to a different address (formaction), so the file matches what's typed in %>
+    <% if (locals.exportAction && nutrition) { %>
+      <button type="submit" class="button-secondary" formaction="<%= exportAction %>"
+              data-download-message="download-status" data-file-name-input="recipeName" data-file-name="my-recipe">Download as .txt</button>
+    <% } %>
     <a href="<%= resetHref %>" data-servings-link><%= resetLabel %></a>
+    <% if (locals.exportAction && nutrition) { %>
+      <span class="download-message" id="download-status" role="status"></span>
+    <% } %>
   </div>
 </form>
 

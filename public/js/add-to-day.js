@@ -1,6 +1,7 @@
 // The "Add to my day" button on the recipe page
 
 import { MAX_DAY_RECIPES, cleanServings, loadDayPlan, saveDayPlan } from './dayPlanStorage.js';
+import { playAnimation } from './animate.js';
 
 const dayActions = document.querySelector('#day-actions');
 const addButton = document.querySelector('#add-to-day');
@@ -35,6 +36,7 @@ function addToDay() {
     message.textContent = `Added to your day (${plan.length} of ${MAX_DAY_RECIPES}).`;
   }
 
+  playAnimation(message, 'fade-in');
   saveDayPlan(plan);
   showButtonState();
 }

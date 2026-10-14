@@ -1,6 +1,8 @@
 // Reads and saves the day plan in this browser's localStorage.
 // The plan is a list of recipe ids and servings, like [{ id: '52771', servings: 4 }].
 
+import { playAnimation } from './animate.js';
+
 const STORAGE_KEY = 'recipeWizards.myDay';
 
 // Most recipes in one day (the server uses the same limit in dayPlanController.js)
@@ -35,13 +37,20 @@ export function saveDayPlan(plan) {
   } catch {
     // Storage is blocked (e.g. some private browsing modes), so the plan just won't be kept
   }
-  showDayCount(plan);
+  showDayCount(plan, { animate: true });
 }
 
-// Show how many recipes are in the day in the header link, e.g. "My Day (2)"
-export function showDayCount(plan = loadDayPlan()) {
+// Show how many recipes are in the day in the header link, e.g. "My Day (2)".
+// With animate, the link gives a small pulse if the number changed (used after adding or removing).
+export function showDayCount(plan = loadDayPlan(), { animate = false } = {}) {
   const link = document.querySelector('#day-count-link');
-  if (link) {
-    link.textContent = plan.length ? `My Day (${plan.length})` : 'My Day';
+  if (!link) {
+    return;
+  }
+  const text = plan.length ? `My Day (${plan.length})` : 'My Day';
+  const changed = link.textContent !== text;
+  link.textContent = text;
+  if (animate && changed) {
+    playAnimation(link, 'pulse');
   }
 }

@@ -7,9 +7,9 @@
 
   <%# Everything below is filled in by public/js/my-day.js from the recipes saved in this browser %>
   <noscript><p class="note">This page needs JavaScript turned on.</p></noscript>
-  <p class="note" id="day-status" role="status">Loading your day…</p>
+  <p class="note is-loading" id="day-status" role="status">Loading your day…</p>
 
-  <div id="day-content" hidden>
+  <div id="day-content" class="day-layout" hidden>
     <ul class="day-list" id="day-list"></ul>
     <div class="form-actions">
       <button type="button" class="button-secondary" id="clear-day">Clear my day</button>

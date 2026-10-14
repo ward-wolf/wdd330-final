@@ -1,0 +1,52 @@
+<%#
+  Plain-text version of a recipe and its nutrition, downloaded as a .txt file.
+  This is text, not HTML, so values use the "dash" output tag (as written) instead of the
+  "equals" tag (made safe for HTML). Lines that start with an underscore tag are logic only
+  and don't leave blank lines in the file. padEnd/padStart line the columns up, since a
+  text file has no table.
+  Used by the recipe page and My Recipe. Settings passed in: title, nutrition, servings, and
+  optionally subtitle, sourceUrl (original recipe link) and instructions.
+-%>
+<%_ const perServing = (total) => Math.round((total / servings) * 10) / 10; -%>
+<%_ const withUnit = (value, unit) => (value === null ? 'N/A' : `${value} ${unit}`); -%>
+<%- title.toUpperCase() %>
+<%_ if (locals.subtitle) { -%>
+<%- subtitle %>
+<%_ } -%>
+Exported from Recipe Wizards on <%- exportedOn %>
+<%_ if (locals.sourceUrl) { -%>
+Original recipe: <%- sourceUrl %>
+<%_ } -%>
+
+NUTRITION
+<%- 'Nutrient'.padEnd(16) %><%- 'Whole recipe'.padStart(16) %><%- `Per serving (${servings} servings)`.padStart(30) %>
+<%_ nutrition.nutrients.forEach(n => { -%>
+<%_ const total = nutrition.totals[n.key]; -%>
+<%- n.label.padEnd(16) %><%- withUnit(total, n.unit).padStart(16) %><%- withUnit(total === null ? null : perServing(total), n.unit).padStart(30) %>
+<%_ }) -%>
+<%_ if (nutrition.estimated.length || nutrition.skipped.length || nutrition.missing.length) { -%>
+
+Notes:
+<%_ if (nutrition.estimated.length) { -%>
+- No amount given for: <%- nutrition.estimated.join(', ') %>. Each is estimated at 100 g.
+<%_ } -%>
+<%_ if (nutrition.skipped.length) { -%>
+- Not counted (serving suggestions or garnishes): <%- nutrition.skipped.join(', ') %>.
+<%_ } -%>
+<%_ if (nutrition.missing.length) { -%>
+- No nutrition data found for: <%- nutrition.missing.join(', ') %>. Totals leave these out.
+<%_ } -%>
+<%_ } -%>
+
+INGREDIENTS
+<%_ nutrition.ingredients.forEach(item => { -%>
+- <%- `${item.measure} ${item.name}`.trim() %><% if (item.nutrition.calories !== null) { %> (<%- item.nutrition.calories %> kcal)<% } %><% if (item.note) { %> [<%- item.note %>]<% } %>
+<%_ }) -%>
+<%_ if (locals.instructions) { -%>
+
+INSTRUCTIONS
+<%_ instructions.split(/\r?\n/).filter(line => line.trim()).forEach(line => { -%>
+<%- line.trim() %>
+
+<%_ }) -%>
+<%_ } -%>

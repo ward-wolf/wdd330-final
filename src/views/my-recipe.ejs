@@ -14,10 +14,12 @@
     resetHref: '/my-recipe',
     resetLabel: 'Start over',
     askRecipeName: true,
+    exportAction: '/my-recipe/export',
   }) %>
 
   <%- include('partials/nutrition-results', { heading: recipeName ? `Nutrition for ${recipeName}` : 'Nutrition for your recipe' }) %>
 </main>
 <script src="/js/servings.js"></script>
 <script src="/js/edit-ingredients.js"></script>
+<script type="module" src="/js/download-message.js"></script>
 <%- include('partials/footer') %>

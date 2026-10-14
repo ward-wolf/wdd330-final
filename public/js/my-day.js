@@ -69,12 +69,14 @@ function showTotals(day) {
 async function showDay() {
   const plan = loadDayPlan();
   if (plan.length === 0) {
+    status.classList.remove('is-loading');
     content.hidden = true;
     status.innerHTML = 'Your day is empty. <a href="/">Search for a recipe</a> and select <strong>Add to my day</strong>.';
     return;
   }
 
   status.textContent = 'Loading your day…';
+  status.classList.add('is-loading'); // pulses while waiting (see .is-loading in styles.css)
   try {
     const day = await fetchDayNutrition(plan);
 
@@ -91,6 +93,8 @@ async function showDay() {
   } catch (err) {
     console.error(err);
     status.textContent = 'Sorry, the nutrition for your day couldn\'t be loaded. Please try again.';
+  } finally {
+    status.classList.remove('is-loading');
   }
 }
 

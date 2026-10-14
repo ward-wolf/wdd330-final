@@ -1,0 +1,81 @@
+/* Tablet layout (768px and wider). Builds on the phone layout in styles.css.
+   desktop.css adds more for 1024px and wider. */
+
+@media (min-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  main {
+    padding: 1.5rem;
+  }
+
+  /* Header: logo, links and search all on one line */
+  .site-header {
+    flex-wrap: nowrap;
+    padding: 0.75rem 1.5rem;
+  }
+
+  .site-header .search-form {
+    flex: 0 1 360px;
+  }
+
+  .hero h1 {
+    font-size: 2.75rem;
+  }
+
+  /* Search results: 3 columns */
+  .recipe-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  /* Recipe page: picture and nutrition side by side */
+  .recipe-top {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  /* Ingredient form: one line per ingredient, with column headings */
+  .ingredient-headings,
+  .ingredient-row {
+    display: grid;
+    grid-template-columns: 5rem 8rem 1fr auto;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .ingredient-row {
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .ingredient-row input[name$="[name]"] {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  /* The nutrition box doesn't need the full width on the edit, My Recipe and My Day pages */
+  .edit .nutrition-totals,
+  .my-day .nutrition-totals {
+    max-width: 480px;
+  }
+
+  /* My Day: Remove button beside each recipe instead of under it */
+  .day-recipe {
+    grid-template-columns: 80px 1fr auto;
+  }
+
+  .day-recipe img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .day-recipe button {
+    grid-column: auto;
+    justify-self: auto;
+  }
+}

@@ -1,6 +1,10 @@
 <%- include('partials/head') %>
 <%- include('partials/header') %>
 <main class="recipe">
+  <%# Only shown when the person came from search results, since the address then includes the search %>
+  <% if (fromSearch) { %>
+    <p class="back-link"><a href="/search?q=<%= encodeURIComponent(fromSearch) %>">&larr; Back to results for "<%= fromSearch %>"</a></p>
+  <% } %>
   <h1><%= recipe.name %></h1>
   <p class="meta"><%= recipe.area %> &middot; <%= recipe.category %></p>
 
@@ -11,6 +15,15 @@
     <p class="day-message" id="day-message" role="status"></p>
     <a href="/my-day">View my day</a>
   </div>
+
+  <%# Downloads the recipe and nutrition as a text file. data-servings-link lets servings.js
+      keep the servings number in this link, so the file matches the Servings box.
+      download-message.js shows a message in the status line next to it when it's used %>
+  <p class="export-link">
+    <a class="button-secondary" href="/recipe/<%= recipe.id %>/export?servings=<%= servings %>" data-servings-link download
+       data-download-message="download-status" data-file-name="<%= exportFileName %>">Download as .txt</a>
+    <span class="download-message" id="download-status" role="status"></span>
+  </p>
 
   <div class="recipe-top">
     <img src="<%= recipe.thumbnail %>" alt="<%= recipe.name %>" width="400" height="400">
@@ -40,4 +53,5 @@
 </main>
 <script src="/js/servings.js"></script>
 <script type="module" src="/js/add-to-day.js"></script>
+<script type="module" src="/js/download-message.js"></script>
 <%- include('partials/footer') %>
